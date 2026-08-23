@@ -1,0 +1,26 @@
+{
+  "name": "razorguard-ai",
+  "version": "1.0.0",
+  "description": "Autonomous AI Risk Manager for Razorpay Transactions & Merchants (Razorpay AI Buildathon - Track 2)",
+  "main": "backend/server.js",
+  "scripts": {
+    "install:all": "npm install && cd backend && npm install && cd ../frontend && npm install",
+    "dev:backend": "cd backend && npm run dev",
+    "dev:frontend": "cd frontend && npm run dev",
+    "dev": "concurrently \"npm run dev:backend\" \"npm run dev:frontend\"",
+    "start": "cd backend && npm start"
+  },
+  "devDependencies": {
+    "concurrently": "^8.2.2"
+  },
+  "keywords": [
+    "razorpay",
+    "ai-risk-manager",
+    "gemini",
+    "fraud-detection",
+    "hackathon",
+    "fintech"
+  ],
+  "author": "RazorGuard Team",
+  "license": "MIT"
+}

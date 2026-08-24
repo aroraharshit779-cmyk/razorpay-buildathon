@@ -18,9 +18,11 @@ app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-// API Routes
+// API Routes (supports both /api/* prefix and direct routing)
 app.use('/api/risk', riskRouter);
+app.use('/risk', riskRouter);
 app.use('/api/webhooks', webhookRouter);
+app.use('/webhooks', webhookRouter);
 
 // System Health Check
 app.get(['/api/health', '/health'], (req, res) => {

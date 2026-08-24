@@ -4,7 +4,7 @@ const { determineAction } = require('./policyEngine');
 const { executeActionAndAudit } = require('./actionExecutor');
 const { generateSyntheticBatch } = require('./syntheticGenerator');
 const { RISK_VECTOR, RISK_ACTION } = require('../config/constants');
-const { db } = require('./db');
+const { saveEvaluationRun } = require('./db');
 
 /**
  * Runs a complete benchmark evaluation over synthetic/labeled transactions.
@@ -117,9 +117,7 @@ async function runBenchmarkEvaluation(customBatch = null) {
 
   // Store run summary in store DB
   try {
-    if (db.saveEvaluationRun) {
-      db.saveEvaluationRun(evaluationSummary);
-    }
+    saveEvaluationRun(evaluationSummary);
   } catch (err) {
     console.warn('DB evaluation save warning:', err.message);
   }

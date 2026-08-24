@@ -1,11 +1,16 @@
 const fs = require('fs');
 const path = require('path');
 
-const dataDir = path.join(__dirname, '../data');
+const isVercel = Boolean(process.env.VERCEL);
+const dataDir = isVercel ? '/tmp/data' : path.join(__dirname, '../data');
 const storePath = path.join(dataDir, 'store.json');
 
-if (!fs.existsSync(dataDir)) {
-  fs.mkdirSync(dataDir, { recursive: true });
+try {
+  if (!fs.existsSync(dataDir)) {
+    fs.mkdirSync(dataDir, { recursive: true });
+  }
+} catch (e) {
+  // Ignore filesystem permission errors in serverless containers
 }
 
 let store = {
@@ -23,22 +28,25 @@ let store = {
 };
 
 // Load initial store if exists
-if (fs.existsSync(storePath)) {
-  try {
+try {
+  if (fs.existsSync(storePath)) {
     const raw = fs.readFileSync(storePath, 'utf8');
     store = { ...store, ...JSON.parse(raw) };
-  } catch (err) {
-    console.warn('Failed to parse existing store.json, using fresh store.');
+  } else {
+    saveStore();
   }
-} else {
-  saveStore();
+} catch (err) {
+  // Use in-memory store
 }
 
 function saveStore() {
   try {
+    if (!fs.existsSync(dataDir)) {
+      fs.mkdirSync(dataDir, { recursive: true });
+    }
     fs.writeFileSync(storePath, JSON.stringify(store, null, 2), 'utf8');
   } catch (err) {
-    console.error('Error writing store.json:', err.message);
+    // In-memory fallback
   }
 }
 

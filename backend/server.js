@@ -36,14 +36,12 @@ app.get(['/api/health', '/health'], (req, res) => {
   });
 });
 
-// Start Express Server only when run directly (not imported)
-if (require.main === module) {
-  app.listen(PORT, () => {
-    console.log(`===================================================`);
-    console.log(` RazorGuard AI Risk Server running on port ${PORT}`);
-    console.log(` Health Check: http://localhost:${PORT}/api/health`);
-    console.log(`===================================================`);
-  });
-}
+// Start Express Server
+const server = app.listen(PORT, () => {
+  console.log(`===================================================`);
+  console.log(` RazorGuard AI Risk Server running on port ${PORT}`);
+  console.log(` Health Check: http://localhost:${PORT}/api/health`);
+  console.log(`===================================================`);
+});
 
 module.exports = app;
